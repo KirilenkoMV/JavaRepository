@@ -14,7 +14,7 @@ public class Task4 {
     public static void main(String[] args) {
         String text = " Найти! и вывести предложение из текста. В этом этом предложении этом максимально количество одинаковых слов? В этом предложении мало слов! Привет.";
         String[] arrayText = text.split("[\\?]+");
-        for (int i = 0; i <arrayText.length-2 ; i++) {
+        for (int i = 0; i < arrayText.length - 2; i++) {
             String[] arrayQuestion = text.split("[\\!\\.]+");
 
         }

@@ -21,8 +21,9 @@ public class Ex7 {
         Iterator iterator = marks.iterator();
         while (iterator.hasNext()) {
             int mark = (Integer) iterator.next();
-            if (mark < 4)
+            if (mark < 4) {
                 iterator.remove();
+            }
         }
 
         for (Integer mark : marks) {

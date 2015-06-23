@@ -1,6 +1,7 @@
 package files;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,33 +18,38 @@ import java.util.regex.Pattern;
  */
 public class Ex12 {
     public static void main(String[] args) {
+        File file = new File("./KirilenkoMV/src/files/file with digits.txt");
+        List<Integer> integerList = new ArrayList<Integer>();
+        Set<Integer> uniqIntegers = new HashSet<Integer>();
+
+        findRegexInFile(file, "\\d+", integerList);
+        Integer summa = 0;
+        for (Integer digit : integerList) {
+            System.out.print(digit + " ");
+            summa += digit;
+        }
+        System.out.println("    summa = " + summa);
+
+        uniqIntegers.addAll(integerList);
+        for (Integer digit : uniqIntegers) {
+            System.out.print(digit + " ");
+        }
+
+    }
+
+    private static void findRegexInFile(File file, String regex, List list) {
         BufferedReader bufferedReader = null;
         try {
-            bufferedReader = new BufferedReader(new FileReader("./KirilenkoMV/src/files/file with digits.txt"));
+            bufferedReader = new BufferedReader(new FileReader(file));
             String res = bufferedReader.readLine();
-            int summa = 0;
-            Pattern patternPunct = Pattern.compile("\\d+");
-            List<Integer> allDigits = new ArrayList<Integer>();
-            Set<Integer> uniqDigits = new HashSet<Integer>();
+            Pattern patternPunct = Pattern.compile(regex);
             while (res != null) {
                 Matcher matcher = patternPunct.matcher(res);
                 while (matcher.find()) {
-                    allDigits.add(Integer.parseInt(matcher.group()));
+                    list.add(Integer.parseInt(matcher.group()));
                 }
                 res = bufferedReader.readLine();
             }
-
-            for (Integer digit : allDigits) {
-                System.out.print(digit + " ");
-                summa += digit;
-            }
-            System.out.println("    summa = " + summa);
-
-            uniqDigits.addAll(allDigits);
-            for (Integer digit : uniqDigits) {
-                System.out.print(digit + " ");
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -55,6 +61,5 @@ public class Ex12 {
                 }
             }
         }
-
     }
 }

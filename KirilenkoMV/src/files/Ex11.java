@@ -10,38 +10,53 @@ import java.util.regex.Pattern;
  */
 public class Ex11 {
     public static void main(String[] args) {
-        FileWriter fileWriter = null;
+        File file = new File("file.txt");
+        createFileWithTestText(file);
+        int punctuals = countRegexInFile(file, "\\p{Punct}");
+        System.out.println("Знаков препинания = " + punctuals);
+        int words = countRegexInFile(file, "\\s+");
+        System.out.println("Слов = " + words);
+
+    }
+
+    private static int countRegexInFile(File file, String regex) {
+        int counter = 0;
         BufferedReader bufferedReader = null;
         try {
-            fileWriter = new FileWriter("file.txt");
+            bufferedReader = new BufferedReader(new FileReader(file));
+            String res = bufferedReader.readLine();
+            Pattern patternPunct = Pattern.compile(regex);
+            Matcher matcher;
+            while (res != null) {
+                matcher = patternPunct.matcher(res);
+                while (matcher.find()) {
+                    counter++;
+                }
+                res = bufferedReader.readLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return counter;
+    }
+
+    private static void createFileWithTestText(File file) {
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(file);
             fileWriter.write("Тестовый файл,\n");
             fileWriter.write("с тестовым текстом,\n");
             fileWriter.write("записанным в файл при помощи FileWriter, а затем \n");
             fileWriter.write("прочитанным из файла при помощи BufferedInputStream. ");
             fileWriter.close();
-
-            bufferedReader = new BufferedReader(new FileReader("file.txt"));
-            String res = bufferedReader.readLine();
-            int wordCounter = 0;
-            int punctualCounter = 0;
-            Pattern patternPunct = Pattern.compile("\\p{Punct}");
-            Pattern patternWord = Pattern.compile("\\s+");
-            Matcher matcher;
-            while (res != null) {
-
-                matcher = patternPunct.matcher(res);
-                while (matcher.find()) {
-                    punctualCounter++;
-                }
-                matcher = patternWord.matcher(res);
-                while (matcher.find()) {
-                    wordCounter++;
-                }
-                res = bufferedReader.readLine();
-            }
-            System.out.println("Знаков препинания = " + punctualCounter);
-            System.out.println("Слов = " + wordCounter);
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -52,14 +67,6 @@ public class Ex11 {
                     e.printStackTrace();
                 }
             }
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-
     }
 }
